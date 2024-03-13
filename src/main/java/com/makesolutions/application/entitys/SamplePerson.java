@@ -1,5 +1,6 @@
-package com.makesolutions.application.data;
+package com.makesolutions.application.entitys;
 
+import com.makesolutions.application.data.AbstractEntity;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Email;
 import java.time.LocalDate;

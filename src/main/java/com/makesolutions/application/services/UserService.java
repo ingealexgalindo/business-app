@@ -1,6 +1,6 @@
 package com.makesolutions.application.services;
 
-import com.makesolutions.application.data.User;
+import com.makesolutions.application.entitys.User;
 import com.makesolutions.application.data.UserRepository;
 import java.util.Optional;
 import org.springframework.data.domain.Page;

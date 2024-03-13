@@ -1,6 +1,7 @@
-package com.makesolutions.application.data;
+package com.makesolutions.application.entitys;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.makesolutions.application.data.AbstractEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;

@@ -1,6 +1,6 @@
 package com.makesolutions.application.security;
 
-import com.makesolutions.application.data.User;
+import com.makesolutions.application.entitys.User;
 import com.makesolutions.application.data.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,6 +1,6 @@
 package com.makesolutions.application.views;
 
-import com.makesolutions.application.data.User;
+import com.makesolutions.application.entitys.User;
 import com.makesolutions.application.security.AuthenticatedUser;
 import com.makesolutions.application.views.checkoutform.CheckoutFormView;
 import com.makesolutions.application.views.clientes.ClientesView;
@@ -78,15 +78,15 @@ public class MainLayout extends AppLayout {
         }
         if (accessChecker.hasAccess(VentasDetailView.class)) {
             nav.addItem(
-                    new SideNavItem("Ventas Detail", VentasDetailView.class, LineAwesomeIcon.PALLET_SOLID.create()));
+                    new SideNavItem("Sales", VentasDetailView.class, LineAwesomeIcon.PALLET_SOLID.create()));
 
         }
         if (accessChecker.hasAccess(ClientesView.class)) {
-            nav.addItem(new SideNavItem("Clientes", ClientesView.class, LineAwesomeIcon.ADDRESS_BOOK_SOLID.create()));
+            nav.addItem(new SideNavItem("Customers", ClientesView.class, LineAwesomeIcon.ADDRESS_BOOK_SOLID.create()));
 
         }
         if (accessChecker.hasAccess(ProductosView.class)) {
-            nav.addItem(new SideNavItem("Productos", ProductosView.class, LineAwesomeIcon.PALLET_SOLID.create()));
+            nav.addItem(new SideNavItem("Products", ProductosView.class, LineAwesomeIcon.PALLET_SOLID.create()));
 
         }
         if (accessChecker.hasAccess(CheckoutFormView.class)) {

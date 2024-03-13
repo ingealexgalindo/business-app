@@ -1,6 +1,6 @@
 package com.makesolutions.application.views.clientes;
 
-import com.makesolutions.application.data.SamplePerson;
+import com.makesolutions.application.entitys.SamplePerson;
 import com.makesolutions.application.services.SamplePersonService;
 import com.makesolutions.application.views.MainLayout;
 import com.vaadin.flow.component.UI;
