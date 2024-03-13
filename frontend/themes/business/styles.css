@@ -1,0 +1,13 @@
+@import url('./main-layout.css');
+@import url('./views/dashboard-view.css');
+@import url('./views/ventas-detail-view.css');
+@import url('./views/clientes-view.css');
+@import url('./views/productos-view.css');
+@import url('./views/checkout-form-view.css');
+@import url('@fontsource/fira-sans/index.css');    html {
+      --lumo-border-radius-s: calc(var(--lumo-size-m) / 6);
+      --lumo-border-radius-m: calc(var(--lumo-size-m) / 2);
+      --lumo-border-radius-l: var(--lumo-size-m);
+--lumo-font-family: Fira Sans;
+
+    }
