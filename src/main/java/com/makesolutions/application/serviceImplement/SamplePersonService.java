@@ -1,7 +1,7 @@
-package com.makesolutions.application.services;
+package com.makesolutions.application.serviceImplement;
 
 import com.makesolutions.application.entitys.SamplePerson;
-import com.makesolutions.application.data.SamplePersonRepository;
+import com.makesolutions.application.repository.SamplePersonRepository;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +13,8 @@ public class SamplePersonService {
 
     private final SamplePersonRepository repository;
 
-    public SamplePersonService(SamplePersonRepository repository) {
+    public SamplePersonService(SamplePersonRepository repository)
+    {
         this.repository = repository;
     }
 

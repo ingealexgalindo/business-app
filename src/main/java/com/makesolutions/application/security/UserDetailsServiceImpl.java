@@ -1,7 +1,7 @@
 package com.makesolutions.application.security;
 
 import com.makesolutions.application.entitys.User;
-import com.makesolutions.application.data.UserRepository;
+import com.makesolutions.application.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;

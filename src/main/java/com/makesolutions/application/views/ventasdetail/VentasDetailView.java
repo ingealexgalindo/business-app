@@ -1,7 +1,7 @@
 package com.makesolutions.application.views.ventasdetail;
 
 import com.makesolutions.application.entitys.SamplePerson;
-import com.makesolutions.application.services.SamplePersonService;
+import com.makesolutions.application.serviceImplement.SamplePersonService;
 import com.makesolutions.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;

@@ -1,7 +1,7 @@
 package com.makesolutions.application.security;
 
-import com.makesolutions.application.data.User;
-import com.makesolutions.application.data.UserRepository;
+import com.makesolutions.application.entitys.User;
+import com.makesolutions.application.repository.UserRepository;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;

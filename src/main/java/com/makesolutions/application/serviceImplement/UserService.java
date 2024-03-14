@@ -1,7 +1,7 @@
-package com.makesolutions.application.services;
+package com.makesolutions.application.serviceImplement;
 
 import com.makesolutions.application.entitys.User;
-import com.makesolutions.application.data.UserRepository;
+import com.makesolutions.application.repository.UserRepository;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

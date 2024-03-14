@@ -1,4 +1,4 @@
-package com.makesolutions.application.data;
+package com.makesolutions.application.repository;
 
 
 import com.makesolutions.application.entitys.User;

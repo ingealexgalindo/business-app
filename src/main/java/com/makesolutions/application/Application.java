@@ -1,6 +1,6 @@
 package com.makesolutions.application;
 
-import com.makesolutions.application.data.SamplePersonRepository;
+import com.makesolutions.application.repository.SamplePersonRepository;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.theme.Theme;

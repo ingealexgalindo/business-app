@@ -1,7 +1,9 @@
 package com.makesolutions.application.views.productos;
 
+import com.makesolutions.application.entitys.Producto;
 import com.makesolutions.application.entitys.SamplePerson;
-import com.makesolutions.application.services.SamplePersonService;
+import com.makesolutions.application.serviceImplement.SamplePersonService;
+import com.makesolutions.application.services.IProductsService;
 import com.makesolutions.application.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -39,31 +41,29 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 @Uses(Icon.class)
 public class ProductosView extends Div implements BeforeEnterObserver {
 
-    private final String SAMPLEPERSON_ID = "samplePersonID";
-    private final String SAMPLEPERSON_EDIT_ROUTE_TEMPLATE = "Productos-detail/%s/edit";
+    private final String PRODUCT_ID = "productID";
+    private final String PRODUCT_EDIT_ROUTE_TEMPLATE = "Productos-detail/%s/edit";
 
-    private final Grid<SamplePerson> grid = new Grid<>(SamplePerson.class, false);
+    private final Grid<Producto> grid = new Grid<>(Producto.class, false);
 
-    private TextField firstName;
-    private TextField lastName;
-    private TextField email;
-    private TextField phone;
-    private DatePicker dateOfBirth;
-    private TextField occupation;
-    private TextField role;
-    private Checkbox important;
+    private TextField nombre;
+    private TextField descripcion;
+    private TextField precioCompra;
+    private TextField precioVenta;
+    private TextField stockMinimo;
 
-    private final Button cancel = new Button("Cancel");
-    private final Button save = new Button("Save");
 
-    private final BeanValidationBinder<SamplePerson> binder;
+    private final Button cancel = new Button("Cancelar");
+    private final Button save = new Button("Guardar");
 
-    private SamplePerson samplePerson;
+    private final BeanValidationBinder<Producto> binder;
 
-    private final SamplePersonService samplePersonService;
+    private Producto sampleProduct;
 
-    public ProductosView(SamplePersonService samplePersonService) {
-        this.samplePersonService = samplePersonService;
+    private final IProductsService productsService;
+
+    public ProductosView(IProductsService productsService) {
+        this.productsService = productsService;
         addClassNames("productos-view");
 
         // Create UI
@@ -75,23 +75,13 @@ public class ProductosView extends Div implements BeforeEnterObserver {
         add(splitLayout);
 
         // Configure Grid
-        grid.addColumn("firstName").setAutoWidth(true);
-        grid.addColumn("lastName").setAutoWidth(true);
-        grid.addColumn("email").setAutoWidth(true);
-        grid.addColumn("phone").setAutoWidth(true);
-        grid.addColumn("dateOfBirth").setAutoWidth(true);
-        grid.addColumn("occupation").setAutoWidth(true);
-        grid.addColumn("role").setAutoWidth(true);
-        LitRenderer<SamplePerson> importantRenderer = LitRenderer.<SamplePerson>of(
-                "<vaadin-icon icon='vaadin:${item.icon}' style='width: var(--lumo-icon-size-s); height: var(--lumo-icon-size-s); color: ${item.color};'></vaadin-icon>")
-                .withProperty("icon", important -> important.isImportant() ? "check" : "minus").withProperty("color",
-                        important -> important.isImportant()
-                                ? "var(--lumo-primary-text-color)"
-                                : "var(--lumo-disabled-text-color)");
+        grid.addColumn("nombre").setAutoWidth(true);
+        grid.addColumn("descripcion").setAutoWidth(true);
+        grid.addColumn("precioCompra").setAutoWidth(true);
+        grid.addColumn("precioVenta").setAutoWidth(true);
+        grid.addColumn("stockMinimo").setAutoWidth(true);
 
-        grid.addColumn(importantRenderer).setHeader("Important").setAutoWidth(true);
-
-        grid.setItems(query -> samplePersonService.list(
+        grid.setItems(query -> productsService.list(
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
                 .stream());
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
@@ -99,7 +89,7 @@ public class ProductosView extends Div implements BeforeEnterObserver {
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
-                UI.getCurrent().navigate(String.format(SAMPLEPERSON_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
+                UI.getCurrent().navigate(String.format(PRODUCT_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
             } else {
                 clearForm();
                 UI.getCurrent().navigate(ProductosView.class);
@@ -107,7 +97,7 @@ public class ProductosView extends Div implements BeforeEnterObserver {
         });
 
         // Configure Form
-        binder = new BeanValidationBinder<>(SamplePerson.class);
+        binder = new BeanValidationBinder<>(Producto.class);
 
         // Bind fields. This is where you'd define e.g. validation rules
 
@@ -120,11 +110,11 @@ public class ProductosView extends Div implements BeforeEnterObserver {
 
         save.addClickListener(e -> {
             try {
-                if (this.samplePerson == null) {
-                    this.samplePerson = new SamplePerson();
+                if (this.sampleProduct == null) {
+                    this.sampleProduct = new Producto();
                 }
-                binder.writeBean(this.samplePerson);
-                samplePersonService.update(this.samplePerson);
+                binder.writeBean(this.sampleProduct);
+                productsService.update(this.sampleProduct);
                 clearForm();
                 refreshGrid();
                 Notification.show("Data updated");
@@ -142,14 +132,14 @@ public class ProductosView extends Div implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        Optional<Long> samplePersonId = event.getRouteParameters().get(SAMPLEPERSON_ID).map(Long::parseLong);
-        if (samplePersonId.isPresent()) {
-            Optional<SamplePerson> samplePersonFromBackend = samplePersonService.get(samplePersonId.get());
-            if (samplePersonFromBackend.isPresent()) {
-                populateForm(samplePersonFromBackend.get());
+        Optional<Long> productId = event.getRouteParameters().get(PRODUCT_ID).map(Long::parseLong);
+        if (productId.isPresent()) {
+            Optional<Producto> productFromBackend = productsService.get(productId.get());
+            if (productFromBackend.isPresent()) {
+                populateForm(productFromBackend.get());
             } else {
                 Notification.show(
-                        String.format("The requested samplePerson was not found, ID = %s", samplePersonId.get()), 3000,
+                        String.format("The requested product was not found, ID = %s", productId.get()), 3000,
                         Notification.Position.BOTTOM_START);
                 // when a row is selected but the data is no longer available,
                 // refresh grid
@@ -168,15 +158,12 @@ public class ProductosView extends Div implements BeforeEnterObserver {
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        firstName = new TextField("First Name");
-        lastName = new TextField("Last Name");
-        email = new TextField("Email");
-        phone = new TextField("Phone");
-        dateOfBirth = new DatePicker("Date Of Birth");
-        occupation = new TextField("Occupation");
-        role = new TextField("Role");
-        important = new Checkbox("Important");
-        formLayout.add(firstName, lastName, email, phone, dateOfBirth, occupation, role, important);
+        nombre = new TextField("Nombre");
+        descripcion = new TextField("Descripción");
+        precioCompra = new TextField("Precio costo");
+        precioVenta = new TextField("Precio Venta");
+        stockMinimo = new TextField("Cantidad Minima");
+        formLayout.add(nombre, descripcion, precioCompra, precioVenta, stockMinimo);
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
@@ -209,9 +196,9 @@ public class ProductosView extends Div implements BeforeEnterObserver {
         populateForm(null);
     }
 
-    private void populateForm(SamplePerson value) {
-        this.samplePerson = value;
-        binder.readBean(this.samplePerson);
+    private void populateForm(Producto value) {
+        this.sampleProduct = value;
+        binder.readBean(this.sampleProduct);
 
     }
 }
